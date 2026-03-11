@@ -1,28 +1,28 @@
-# fugui-momo-daily
+# 富贵摸摸日报（fugui-momo-daily）
 
-A Python project for generating Markdown-based **dividend summaries** and **low-volatility stock analysis reports** for a configurable CN/HK stock pool.
+一个用于生成 **红利汇总** 与 **低波股票分析报告** 的 Python 项目，面向可配置的 A 股 / 港股股票池输出 Markdown 报告。
 
-The repository packages a repeatable workflow for collecting dividend data, fetching current and historical prices, calculating yield-related metrics, and producing two report files that can be used in research, monitoring, or publishing pipelines.
+这个仓库提供了一套可重复执行的流程：抓取分红数据、获取当前价格与历史价格、计算股息率与均线相关指标，并最终生成两份可直接查看或继续加工的 Markdown 文件。
 
-## Features
+## 项目特性
 
-- Generate a consolidated dividend summary in Markdown
-- Generate a versioned stock analysis report in Markdown
-- Support configurable stock pools through JSON
-- Support both A-share and Hong Kong stock symbols
-- Use dedicated data-source rules for dividends, prices, and moving averages
-- Keep output generation scriptable and repeatable
+- 生成 Markdown 格式的分红汇总表
+- 生成 Markdown 格式的股票分析报告
+- 通过 JSON 配置股票池
+- 同时支持 A 股与港股
+- 将分红、现价、历史价格、均线等数据处理流程脚本化
+- 适合手动执行，也适合集成到自动化任务中
 
-## Output
+## 输出内容
 
-By default, the project generates two Markdown files under `output/`:
+默认会在 `output/` 目录下生成两份文件：
 
 1. `股票分红信息整合总表_YYYY-MM-DD.md`
 2. `股票分析表格_版本11_YYYY-MM-DD.md`
 
-Sample output files are included in this repository for reference.
+仓库中已附带示例输出，便于快速查看生成结果的格式。
 
-## Repository Structure
+## 仓库结构
 
 ```text
 .
@@ -40,23 +40,23 @@ Sample output files are included in this repository for reference.
 └─ output/
 ```
 
-## Requirements
+## 环境要求
 
-- Python 3.10+
+- Python 3.10 及以上
 
-Install dependencies with:
+安装依赖：
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Quick Start
+## 快速开始
 
-### 1. Configure the stock pool
+### 1. 配置股票池
 
-Edit `references/default-stocks.json`.
+编辑 `references/default-stocks.json`。
 
-Example:
+示例：
 
 ```json
 [
@@ -65,70 +65,64 @@ Example:
 ]
 ```
 
-Field meanings:
+字段说明：
 
-- `name`: display name
-- `code`: stock code
-- `prefix`: market prefix such as `sh`, `sz`, or `hk`
+- `name`：显示名称
+- `code`：股票代码
+- `prefix`：市场前缀，例如 `sh`、`sz`、`hk`
 
-### 2. Run the full workflow
+### 2. 一键生成完整报告
 
 ```bash
 python scripts/refresh_full_report.py --date 2026-03-07 --version 11
 ```
 
-### 3. Run only the dividend summary
+### 3. 仅生成分红汇总
 
 ```bash
 python scripts/generate_dividend_summary.py --date 2026-03-07
 ```
 
-### 4. Run only the stock analysis report
+### 4. 仅生成股票分析报告
 
 ```bash
 python scripts/generate_stock_analysis_report.py --date 2026-03-07 --version 11
 ```
 
-### 5. Override stock pool or output directory
+### 5. 指定股票池或输出目录
 
 ```bash
-python scripts/refresh_full_report.py \
-  --date 2026-03-07 \
-  --version 11 \
-  --stocks-file references/default-stocks.json \
-  --out-dir output
+python scripts/refresh_full_report.py --date 2026-03-07 --version 11 --stocks-file references/default-stocks.json --out-dir output
 ```
 
-## Data Sources
+## 数据来源
 
-The detailed rule set is documented in `references/source-rules.md`.
+详细规则见 `references/source-rules.md`。
 
-Current source stack:
+当前版本使用的数据来源如下：
 
-- **Dividend details**: 同花顺 F10 bonus pages
-- **Current prices**: 腾讯财经 quote API
-- **A-share historical prices / moving averages**: Baostock
-- **Hong Kong historical prices / moving averages**: 东方财富 historical k-line API
+- **分红明细**：同花顺 F10 bonus 页面
+- **当前价格**：腾讯财经行情接口
+- **A 股历史价格与均线**：Baostock
+- **港股历史价格与均线**：东方财富历史 K 线接口
 
-## Method Notes
+## 计算口径说明
 
-- Dividend attribution is based on the **ex-dividend year**, not the report year
-- The `2024` annual dividend yield is calculated by summing **per-event yield values** using the close price on each ex-dividend date
-- The moving-average checks in section 2 follow the fixed rules documented in `references/source-rules.md`
-- The three trend arrows shown after the current price are derived from the **last four completed daily closes**, not from the live quote
+- 分红归属按 **除权除息日 / 除净日所在年份** 计算，而不是按财报报告期年份计算
+- `2024` 全年股息率按 **逐笔分红 ÷ 当次除息日收盘价** 后累计
+- 分析报告中第 2 部分的均线判断，使用 `references/source-rules.md` 中定义的固定规则
+- 当前价格后的 3 个方向箭头，来自 **最近 4 个已完成交易日收盘价** 推导出的 3 段方向变化，不混入实时价格
 
-## Use Cases
+## 适用场景
 
-This repository is suitable for:
+- 红利类股票跟踪
+- 低波股票观察与筛选
+- Markdown 投研报告生成
+- 定时日报 / 周报自动化
+- 基于现有脚本继续扩展自己的研究流程
 
-- Dividend-focused stock tracking
-- Low-volatility stock screening workflows
-- Markdown-based reporting pipelines
-- Scheduled report generation
-- Further extension into larger research automation systems
+## 免责声明
 
-## Disclaimer
+本项目仅用于数据整理、研究辅助与报告生成。
 
-This repository is provided for data organization, research support, and report generation only.
-
-It does **not** constitute investment advice. Always verify data independently before making investment decisions.
+**不构成任何投资建议。** 使用者应自行核验数据，并独立完成投资判断与决策。
