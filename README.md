@@ -1,4 +1,4 @@
-# 富贵摸摸日报（fugui-momo-daily）
+# 富贵momo日报（fugui-momo-daily）
 
 一个用于生成 **红利汇总** 与 **低波股票分析报告** 的 Python 项目，面向可配置的 A 股 / 港股股票池输出 Markdown 报告。
 
