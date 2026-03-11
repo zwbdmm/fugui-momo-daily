@@ -1,0 +1,8 @@
+[
+  {"name": "招商银行", "code": "600036", "prefix": "sh"},
+  {"name": "美的集团", "code": "000333", "prefix": "sz"},
+  {"name": "中国移动", "code": "600941", "prefix": "sh"},
+  {"name": "中信证券", "code": "600030", "prefix": "sh"},
+  {"name": "中信建投证券", "code": "06066", "prefix": "hk"},
+  {"name": "中国平安", "code": "601318", "prefix": "sh"}
+]
