@@ -1,0 +1,5 @@
+pandas
+requests
+baostock
+lxml
+html5lib
